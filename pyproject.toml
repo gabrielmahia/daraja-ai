@@ -35,3 +35,9 @@ daraja-ai = "daraja_ai.server:main"
 [project.urls]
 Homepage   = "https://github.com/gabrielmahia/daraja-ai"
 Repository = "https://github.com/gabrielmahia/daraja-ai"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
