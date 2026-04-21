@@ -189,25 +189,17 @@ class TransactionAnalyser:
             summary["by_type"] = df.groupby("tx_type")["amount"].agg(["count", "sum"]).to_dict()
         return summary
 
-    def ask(self, question: str, api_key: str = None) -> str:
-        """Natural language query over transaction data using Claude Haiku."""
-        import anthropic
-        key = api_key or os.getenv("ANTHROPIC_API_KEY")
-        if not key:
-            return "Set ANTHROPIC_API_KEY to use natural language queries."
+    def ask(self, question: str, api_key: str = "") -> str:
+        """Natural language query over transaction data. Uses Gemini or Anthropic via llm_router."""
+        import sys, os as _os
+        sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", ".."))
+        from llm_router import ask as _ask
         summary = self.analytics_summary()
         fraud   = self.fraud_signals().summary()
-        client  = anthropic.Anthropic(api_key=key)
+        system  = "You are a financial analyst reviewing M-Pesa transaction data. Answer concisely with KES figures."
         prompt  = (
-            f"You are a financial analyst reviewing M-Pesa transaction data.\n\n"
             f"Transaction summary:\n{json.dumps(summary, indent=2)}\n\n"
-            f"Fraud signal report:\n{fraud}\n\n"
-            f"Question: {question}\n\n"
-            f"Answer concisely with specific KES figures and counts."
+            f"Fraud signals:\n{fraud}\n\n"
+            f"Question: {question}"
         )
-        msg = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=500,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return msg.content[0].text
+        return _ask(prompt, system=system, user_key=api_key)
