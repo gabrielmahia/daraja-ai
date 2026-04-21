@@ -1,3 +1,7 @@
+import sys, os
+# Add src/ to path so daraja_ai package is importable on Streamlit Cloud
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
+
 """DarajaAI Streamlit app — upload CSV, get AI analytics."""
 import streamlit as st
 import pandas as pd
