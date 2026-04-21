@@ -31,6 +31,40 @@ try:
 except ImportError:
     HAS_GEMINI = False
 
+# Gemini helper (same pattern as jibu/jumuia — free tier)
+import json, urllib.request
+
+def _get_api_key():
+    """Gemini key from secrets or env. Free at aistudio.google.com"""
+    try:
+        import streamlit as st
+        k = st.secrets.get("GOOGLE_API_KEY") or st.secrets.get("GEMINI_API_KEY")
+        if k: return k
+    except Exception: pass
+    return os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY", "")
+
+def _call_gemini(system: str, user: str, api_key: str) -> str:
+    _BASE = "https://generativelanguage.googleapis.com"
+    models = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-flash-8b"]
+    payload = {
+        "system_instruction": {"parts": [{"text": system}]},
+        "contents": [{"role": "user", "parts": [{"text": user}]}],
+        "generationConfig": {"maxOutputTokens": 600, "temperature": 0.2},
+    }
+    for model in models:
+        url = f"{_BASE}/v1beta/models/{model}:generateContent?key={api_key}"
+        req = urllib.request.Request(url, data=json.dumps(payload).encode(),
+              headers={"Content-Type": "application/json"}, method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                data = json.loads(r.read())
+            return data["candidates"][0]["content"]["parts"][0]["text"]
+        except urllib.error.HTTPError as e:
+            if e.code in (400, 404): continue
+            raise
+        except Exception: continue
+    raise RuntimeError("Gemini unavailable")
+
 try:
     import anthropic
     HAS_ANTHROPIC = True
