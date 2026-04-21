@@ -1,3 +1,4 @@
+-e .[app]
 anthropic>=0.28.0
 pandas>=2.0.0
 numpy>=1.26.0
