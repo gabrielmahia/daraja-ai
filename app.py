@@ -26,26 +26,41 @@ if not HAS_DARAJA:
     st.stop()
 
 try:
+    import google.generativeai as genai
+    HAS_GEMINI = True
+except ImportError:
+    HAS_GEMINI = False
+
+try:
     import anthropic
     HAS_ANTHROPIC = True
 except ImportError:
     HAS_ANTHROPIC = False
+
+HAS_AI = HAS_GEMINI or HAS_ANTHROPIC
 
 st.title("🦁 DarajaAI — M-Pesa Transaction Intelligence")
 st.caption("Upload a Daraja transaction export. Fraud signals and analytics in under 60 seconds.")
 
 with st.sidebar:
     st.header("Settings")
-    if HAS_ANTHROPIC:
+    ENV_KEY = os.getenv("GEMINI_API_KEY", "") or os.getenv("ANTHROPIC_API_KEY", "")
+    if ENV_KEY:
+        api_key = ENV_KEY
+        st.success("✅ AI queries ready")
+    elif HAS_AI:
+        st.markdown(
+            "**Enable AI queries (optional):**\n\n"
+            "Paste a **Gemini API key** (free at [aistudio.google.com](https://aistudio.google.com)) "
+            "or an **Anthropic key** (free at [console.anthropic.com](https://console.anthropic.com))."
+        )
         api_key = st.text_input(
-            "Anthropic API key (optional):",
+            "AI key (Gemini or Anthropic):",
             type="password",
-            help="Only needed for the natural language query feature. "
-                 "Get a free key at anthropic.com. Never stored or sent anywhere except directly to Anthropic."
+            help="Gemini keys start with AIza. Anthropic keys start with sk-ant-. Never stored here."
         )
     else:
         api_key = ""
-        st.info("Install `anthropic` to enable natural language queries.")
     st.divider()
     st.caption("🔒 Your data stays local — transactions are never sent externally.")
     st.caption("[GitHub](https://github.com/gabrielmahia/daraja-ai) · © 2026 Gabriel Mahia")
@@ -125,8 +140,19 @@ if uploaded:
                 if q:
                     with st.spinner("Analysing..."):
                         try:
-                            ans = analyser.ask(q, api_key=api_key)
-                            st.write(ans)
+                            if api_key.startswith("AIza") and HAS_GEMINI:
+                                # Gemini path
+                                genai.configure(api_key=api_key)
+                                model = genai.GenerativeModel("gemini-2.0-flash")
+                                summary = analyser.analytics_summary()
+                                report  = analyser.fraud_signals().summary()
+                                prompt  = f"M-Pesa transaction analytics:\n{summary}\n\nFraud signals:\n{report}\n\nQuestion: {q}\n\nAnswer concisely with KES figures."
+                                resp = model.generate_content(prompt)
+                                st.write(resp.text)
+                            else:
+                                # Anthropic path
+                                ans = analyser.ask(q, api_key=api_key)
+                                st.write(ans)
                         except Exception:
                             st.error("Could not complete that query. Try rephrasing your question.")
 
