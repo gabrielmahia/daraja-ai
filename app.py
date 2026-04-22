@@ -26,8 +26,7 @@ if not HAS_DARAJA:
     st.stop()
 
 try:
-    import google.generativeai as genai
-    HAS_GEMINI = True
+        HAS_GEMINI = True
 except ImportError:
     HAS_GEMINI = False
 
