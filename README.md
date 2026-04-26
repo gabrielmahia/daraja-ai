@@ -4,7 +4,7 @@
 
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-green)](https://modelcontextprotocol.io)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Live-red)](https://daraja-ai.streamlit.app)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Live-red)](https://darajaniai.streamlit.app)
 [![PyPI](https://img.shields.io/badge/PyPI-daraja--ai-orange)](https://pypi.org/project/daraja-ai/)
 
 ## What it does
@@ -69,13 +69,13 @@ print(result)
 
 ## Streamlit app
 
-Live at [daraja-ai.streamlit.app](https://daraja-ai.streamlit.app) — upload a Daraja CSV export and get an AI-powered analytics report in under 60 seconds.
+Live at [daraja-ai.streamlit.app](https://darajaniai.streamlit.app) — upload a Daraja CSV export and get an AI-powered analytics report in under 60 seconds.
 
 ## Related
 
 - [mpesa-mcp](https://github.com/gabrielmahia/mpesa-mcp) — M-Pesa MCP server (3,000+ downloads) — *trigger* M-Pesa payments
 - **DarajaAI** — *analyse* M-Pesa transaction data
-- [Hesabu](https://hesabu.streamlit.app) — County budget execution (public sector M-Pesa data)
+- [Hesabu](https://darajaniai.streamlit.app) — County budget execution (public sector M-Pesa data)
 
 Together: `mpesa-mcp` sends money → `daraja-ai` analyses what happened.
 
