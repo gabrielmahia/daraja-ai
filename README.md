@@ -73,7 +73,7 @@ Live at [daraja-ai.streamlit.app](https://darajaniai.streamlit.app) — upload a
 
 ## Related
 
-- [mpesa-mcp](https://github.com/gabrielmahia/mpesa-mcp) — M-Pesa MCP server (3,000+ downloads) — *trigger* M-Pesa payments
+- [mpesa-mcp](https://github.com/gabrielmahia/mpesa-mcp) — M-Pesa MCP server — *trigger* M-Pesa payments
 - **DarajaAI** — *analyse* M-Pesa transaction data
 - [Hesabu](https://darajaniai.streamlit.app) — County budget execution (public sector M-Pesa data)
 
