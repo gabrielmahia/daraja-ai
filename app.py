@@ -175,13 +175,10 @@ if uploaded:
                         try:
                             if api_key.startswith("AIza") and HAS_GEMINI:
                                 # Gemini path
-                                genai.configure(api_key=api_key)
-                                model = genai.GenerativeModel("gemini-2.0-flash")
                                 summary = analyser.analytics_summary()
                                 report  = analyser.fraud_signals().summary()
                                 prompt  = f"M-Pesa transaction analytics:\n{summary}\n\nFraud signals:\n{report}\n\nQuestion: {q}\n\nAnswer concisely with KES figures."
-                                resp = model.generate_content(prompt)
-                                st.write(resp.text)
+                                st.write(_call_gemini("You analyse M-Pesa transaction data. Answer concisely with KES figures.", prompt, api_key))
                             else:
                                 # Anthropic path
                                 ans = analyser.ask(q, api_key=api_key)
