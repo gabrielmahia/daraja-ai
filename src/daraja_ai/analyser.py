@@ -61,9 +61,15 @@ class TransactionAnalyser:
         self.df: pd.DataFrame | None = None
 
     def load_csv(self, path: str | Path) -> "TransactionAnalyser":
-        df = pd.read_csv(path)
-        df.columns = [c.lower().strip().replace(" ", "_") for c in df.columns]
-        # Normalise column names
+        return self.load_dataframe(pd.read_csv(path))
+
+    def load_dataframe(self, df: pd.DataFrame) -> "TransactionAnalyser":
+        """Normalise column names and parse timestamp/amount for CSVs and DataFrames alike.
+
+        Previously only load_csv parsed these, so a DataFrame with text timestamps made fraud_signals and
+        analytics_summary fail (string subtraction; .dt on non-datetime)."""
+        df = df.copy()
+        df.columns = [str(c).lower().strip().replace(" ", "_") for c in df.columns]
         for alias, canonical in [
             ("transactionid", "transaction_id"),
             ("phonenumber", "phone"),
@@ -74,16 +80,11 @@ class TransactionAnalyser:
         ]:
             if alias in df.columns and canonical not in df.columns:
                 df.rename(columns={alias: canonical}, inplace=True)
-        # Parse timestamp
         if "timestamp" in df.columns:
             df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
         if "amount" in df.columns:
             df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
         self.df = df
-        return self
-
-    def load_dataframe(self, df: pd.DataFrame) -> "TransactionAnalyser":
-        self.df = df.copy()
         return self
 
     def fraud_signals(self) -> FraudReport:
