@@ -16,7 +16,7 @@ classifiers = [
     "Topic :: Office/Business :: Financial",
     "Intended Audience :: Developers",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "pandas>=2.0.0",
     "numpy>=1.26.0",
