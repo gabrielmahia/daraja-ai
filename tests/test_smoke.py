@@ -25,3 +25,20 @@ def test_analytics_summary():
     s = a.analytics_summary()
     assert "total_transactions" in s
     assert s["total_volume_kes"] > 0
+
+
+def test_dataframe_and_csv_loading_agree(tmp_path):
+    """Regression: load_dataframe did not parse text timestamps or amounts (only load_csv did)."""
+    path = tmp_path / "tx.csv"
+    SAMPLE.rename(columns={"phone": "MSISDN"}).to_csv(path, index=False)
+    from_csv = TransactionAnalyser().load_csv(path)
+    from_df = TransactionAnalyser().load_dataframe(SAMPLE)
+    assert str(from_df.df["timestamp"].dtype).startswith("datetime64")
+    assert from_csv.fraud_signals().total_signals == from_df.fraud_signals().total_signals
+    assert from_csv.analytics_summary()["total_volume_kes"] == from_df.analytics_summary()["total_volume_kes"]
+
+
+def test_load_dataframe_does_not_change_the_callers_frame():
+    before = SAMPLE.copy()
+    TransactionAnalyser().load_dataframe(SAMPLE)
+    pd.testing.assert_frame_equal(SAMPLE, before)
