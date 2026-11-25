@@ -191,4 +191,4 @@ if uploaded:
         st.caption("Expected columns: TransactionID, Timestamp, Amount, PhoneNumber, TransactionType")
 
 st.divider()
-st.caption("© 2026 Gabriel Mahia · CC BY-NC-ND 4.0 · contact@aikungfu.dev · Not affiliated with Safaricom")
+st.caption("© 2026 Gabriel Mahia · MIT · contact@aikungfu.dev · Not affiliated with Safaricom")

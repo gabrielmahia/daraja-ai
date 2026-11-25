@@ -2,7 +2,7 @@
 
 > AI-powered fraud signals, anomaly detection, and payment analytics for Safaricom Daraja v3. Give any AI agent the ability to analyse M-Pesa transaction patterns, detect outliers, and surface payment intelligence.
 
-[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-green)](https://modelcontextprotocol.io)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Live-red)](https://darajaniai.streamlit.app)
 [![PyPI](https://img.shields.io/badge/PyPI-daraja--ai-orange)](https://pypi.org/project/daraja-ai/)
@@ -86,5 +86,5 @@ DarajaAI runs entirely locally or on your own server. No transaction data leaves
 ## IP & Collaboration
 
 © 2026 Gabriel Mahia · [contact@aikungfu.dev](mailto:contact@aikungfu.dev)
-License: CC BY-NC-ND 4.0
+License: MIT
 Not affiliated with Safaricom or M-Pesa Africa.
