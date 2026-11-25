@@ -7,7 +7,7 @@ name = "daraja-ai"
 version = "0.1.0"
 description = "AI-powered M-Pesa transaction intelligence — fraud signals, anomaly detection, payment analytics"
 readme = "README.md"
-license = "CC-BY-NC-ND-4.0"
+license = "MIT"
 license-files = ["LICENSE"]
 authors = [{name = "Gabriel Mahia", email = "contact@aikungfu.dev"}]
 keywords = ["kenya","mpesa","daraja","fraud","fintech","ai","africa","mcp","analytics"]
